@@ -1,0 +1,112 @@
+﻿@model IEnumerable<PruebaTecnicaWebMaster.Models.Sale>
+
+@{
+    ViewData["Title"] = "Accounting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/styleAccounting.css" asp-append-version="true" />
+
+<div class="tabs">
+    <div class="tab active" onclick="showTab('tab1')">Pending sales</div>
+    <div class="tab" onclick="showTab('tab2')">Paid sales</div>
+</div>
+
+<!-- formulario 1 -->
+<div id="tab1" class="tab-content active">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Client
+                </th>
+                <th>
+                    Total cost
+                </th>
+                <th>
+                    Date of sale
+                </th>
+                <th>
+                    Payment date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if(item.IsPaid == false)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Client)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            - - -
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdSale">Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- formulario 2 -->
+<div id="tab2" class="tab-content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Client
+                </th>
+                <th>
+                    Total cost
+                </th>
+                <th>
+                    Date of sale
+                </th>
+                <th>
+                    Payment date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.IsPaid == true)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Client)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaidDate)
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-secondary" asp-action="Details" asp-route-id="@item.IdSale">Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/Accounting.js" asp-append-version="true"></script>
+

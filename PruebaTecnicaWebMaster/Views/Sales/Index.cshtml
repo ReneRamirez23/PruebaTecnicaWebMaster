@@ -1,0 +1,75 @@
+﻿@model IEnumerable<PruebaTecnicaWebMaster.Models.Sale>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/styleSale.css" asp-append-version="true" />
+
+<h1>New Sales</h1>
+<br />
+<!-- tabla de productos -->
+<div class="tables-container">
+    <div class="table-wrapper">
+        <h6>Products</h6>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produc Name</th>
+                    <th>Unit Price</th>
+                    <th>Total Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="bodyProduct">
+                
+            </tbody>
+        </table>
+    </div>
+    <!-- tabla y formulario de la venta -->
+    <div class="table-wrapper">
+        <div>
+            <h6>Sale details</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Total Quantity</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="saleBody">
+                    
+                </tbody>
+            </table>
+        </div>
+        <br />
+
+        <!-- formulario -->
+        <form id="infoSale">
+            <div>
+                <div class="mb-3">
+                    <label class="form-label">Total cost</label>
+                    <input id="finalCost" name="finalCost" class="form-control" type="text" value="0" disabled readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Costumer name</label>
+                    <input id="name" name="name" type="text" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Descripcion</label>
+                    <input id="descripcion" name="descripcion" type="text" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mail</label>
+                    <input id="mail" name="mail" type="text" class="form-control">
+                </div>
+            </div>
+        </form>
+        
+        <button id="saveSale" onclick="saveSale()" class="btn btn-success">Save</button>
+    </div>
+</div>
+
+<script src="~/js/Sale.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

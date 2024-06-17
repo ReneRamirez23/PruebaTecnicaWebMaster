@@ -1,0 +1,40 @@
+﻿@model PruebaTecnicaWebMaster.Models.ViewModel.LoginVM
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/css/styleLogin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"   />
+    <title>Index</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form bg-light">
+            <h3 class="text-center mb-4">Iniciar Sesión</h3>
+            <form asp-action="Login" method="post">
+                <div class="mb-3">
+                    <label asp-for="user" class="form-label">User</label>
+                    <input class="form-control" asp-for="user" required>
+                    <div class="invalid-feedback">
+                        Please enter your user
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" asp-for="password" class="form-label">Password</label>
+                    <input type="password" asp-for="password" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter your password
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Sing in</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+Rene - 1234 - admin 
+Josue - 1234 - seller
+Antonio - 1234 - accountant

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaWebMaster.Models;
-using PruebaTecnicaWebMaster.Models.ViewModel;
+using PruebaTecnicaWebMaster.Repositories;
 
 namespace PruebaTecnicaWebMaster.Controllers
 {
@@ -48,21 +47,6 @@ namespace PruebaTecnicaWebMaster.Controllers
             Sale newSale = new Sale();
 
             if (request != null)
-            {
-
-                newSale.Client = request.Client;
-                newSale.Descripcion = request.Descripcion;
-                newSale.MailClient = request.MailClient;
-                newSale.TotalPrice = request.TotalPrice;
-                newSale.CreationDate = DateTime.Now;
-                newSale.PaidDate = DateTime.Now;
-                newSale.IsPaid = false;
-
-
-                _dbContext.Sales.Add(newSale);
-                await _dbContext.SaveChangesAsync();
-            }
-            else
             {
                 return Json(new { error = "error" });
             }
@@ -122,12 +106,6 @@ namespace PruebaTecnicaWebMaster.Controllers
 
             var sale = _dbContext.Sales.Where(x => x.IdSale == id).FirstOrDefault();
 
-            sale.PaidDate = DateTime.Now;
-            sale.IsPaid = true;
-
-            _dbContext.Sales.Update(sale);
-            await _dbContext.SaveChangesAsync();
-
             return RedirectToAction("Accounting", "Sales");
         }
 
@@ -153,13 +131,6 @@ namespace PruebaTecnicaWebMaster.Controllers
                 sale = sale,
                 products = products
             };
-
-
-
-            if (sale == null)
-            {
-                return NotFound();
-            }
 
             return View(saleVM);
         }

@@ -54,8 +54,6 @@ namespace PruebaTecnicaWebMaster.Controllers
             {
                 return NotFound();
             }
-            return View(product);
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProducts,NameProducts,UnitPrice,Quantity,Active")] Product product)
@@ -102,11 +100,8 @@ namespace PruebaTecnicaWebMaster.Controllers
             {
                 return NotFound();
             }
-
             return View(product);
         }
-
-        // POST: Product/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -119,10 +114,6 @@ namespace PruebaTecnicaWebMaster.Controllers
 
             await _dbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-        private bool ProducExists(int id)
-        {
-            return _dbContext.Products.Any(e => e.IdProducts == id);
         }
     }
 }

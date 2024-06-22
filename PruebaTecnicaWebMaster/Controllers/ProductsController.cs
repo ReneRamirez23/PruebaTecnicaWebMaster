@@ -2,27 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaWebMaster.Models;
+using PruebaTecnicaWebMaster.Repositories;
 
 namespace PruebaTecnicaWebMaster.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly BD_ControlVentasContext _dbContext;
-
-        public ProductsController(BD_ControlVentasContext context)
+        private readonly IProductRepository _productRepository;
+        public ProductsController(IProductRepository productRepository)
         {
-
-            _dbContext = context;
-
+            _productRepository = productRepository;
         }
+
         [Authorize(policy: "Admin")]
         public async Task<IActionResult> Index()
         {
-            List<Product> productlist = await _dbContext.Products.ToListAsync();
-            return View(productlist);
+            var productList = _productRepository.GetAll();
+            return View(productList);
         }
 
-        // GET: Product/Create
+        // Add Product
         public IActionResult Create()
         {
             return View();
@@ -30,49 +29,42 @@ namespace PruebaTecnicaWebMaster.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProducts,NameProducts,UnitPrice,Quantity,Active")] Product product)
+        public IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Add(product);
-                await _dbContext.SaveChangesAsync();
+                _productRepository.Add(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
 
-        // GET: Produc/Edit
-        public async Task<IActionResult> Edit(int? id)
+        // Update Product
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            var products = _productRepository.GetById(id);
+            if (products == null)
             {
                 return NotFound();
             }
-
-            var product = await _dbContext.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            return View(products);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProducts,NameProducts,UnitPrice,Quantity,Active")] Product product)
+        public ActionResult Edit(int id, Product product)
         {
             if (id != product.IdProducts)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 try
                 {
-                    _dbContext.Update(product);
-                    await _dbContext.SaveChangesAsync();
-                }
+                    _productRepository.Update(product);
+                } 
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProducExists(product.IdProducts))
+                    if (_productRepository.GetById(product.IdProducts) == null)
                     {
                         return NotFound();
                     }
@@ -85,17 +77,12 @@ namespace PruebaTecnicaWebMaster.Controllers
             }
             return View(product);
         }
+        
 
-        // GET: product/Delete/
-        public async Task<IActionResult> Delete(int? id)
+        // Delete User
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _dbContext.Products
-                .FirstOrDefaultAsync(m => m.IdProducts == id);
+            var product = _productRepository.GetById(id);
             if (product == null)
             {
                 return NotFound();
@@ -104,15 +91,9 @@ namespace PruebaTecnicaWebMaster.Controllers
         }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var product = await _dbContext.Products.FindAsync(id);
-            if (product != null)
-            {
-                _dbContext.Products.Remove(product);
-            }
-
-            await _dbContext.SaveChangesAsync();
+            _productRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }

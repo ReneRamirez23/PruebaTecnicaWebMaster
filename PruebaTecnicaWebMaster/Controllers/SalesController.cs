@@ -1,19 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PruebaTecnicaWebMaster.Models;
+using PruebaTecnicaWebMaster.Models.ViewModel;
 using PruebaTecnicaWebMaster.Repositories;
 
 namespace PruebaTecnicaWebMaster.Controllers
 {
     public class SalesController : Controller
     {
-        private readonly BD_ControlVentasContext _dbContext;
-
-        public SalesController(BD_ControlVentasContext context)
+        public readonly ISaleRepository _saleRepository;
+        private readonly ISalesProductRepository _salesProductRepository;
+        private readonly IProductRepository2 _productRepository2;
+        public SalesController(ISaleRepository saleRepository, ISalesProductRepository salesProductRepository, IProductRepository2 productRepository2)
         {
-
-            _dbContext = context;
-
+            _saleRepository = saleRepository;
+            _salesProductRepository = salesProductRepository;
+            _productRepository2 = productRepository2;
         }
 
         [Authorize(policy: "Sell")]
@@ -24,32 +26,44 @@ namespace PruebaTecnicaWebMaster.Controllers
         [Authorize(policy: "Accounting")]
         public async Task<IActionResult> Accounting()
         {
-            List<Sale> salelist = await _dbContext.Sales.ToListAsync();
+            var salelist = _saleRepository.GetAll();
             return View(salelist);
         }
 
-        // GET: Produc list
+        // produc list
         [HttpGet]
         public async Task<IActionResult> InfoData()
         {
 
-            List<Product> data = await _dbContext.Products.ToListAsync();
+            var data = _saleRepository.GetAllProducts();
 
             return Json(data);
         }
 
 
-        // GET: Sale/Create
+        // Add sale
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Sale request)
         {
-            Sale newSale = new Sale();
-
-            if (request != null)
+            if (request == null)
             {
                 return Json(new { error = "error" });
             }
+
+            Sale newSale = new Sale
+            {
+                Client = request.Client,
+                Descripcion = request.Descripcion,
+                MailClient = request.MailClient,
+                TotalPrice = request.TotalPrice,
+                CreationDate = DateTime.Now,
+                PaidDate = DateTime.Now,
+                IsPaid = false
+            };
+
+            await _saleRepository.AddAsync(newSale);
+            await _saleRepository.SaveChangesAsync();
 
             var idSale = newSale.IdSale;
 
@@ -57,30 +71,32 @@ namespace PruebaTecnicaWebMaster.Controllers
             {
                 foreach (var product in request.SalesProducts)
                 {
-                    SalesProduct saleDetail = new SalesProduct();
+                    SalesProduct saleDetail = new SalesProduct
+                    {
+                        SalesId = idSale,
+                        ProductsId = product.ProductsId,
+                        Quantity = product.Quantity
+                    };
 
-                    saleDetail.SalesId = idSale;
-                    saleDetail.ProductsId = product.ProductsId;
-                    saleDetail.Quantity = product.Quantity;
-
-                    _dbContext.SalesProducts.Add(saleDetail);
-                    await _dbContext.SaveChangesAsync();
+                    await _salesProductRepository.AddAsync(saleDetail);
                 }
+                await _salesProductRepository.SaveChangesAsync();
 
                 foreach (var product in request.SalesProducts)
                 {
-                    var selectProduct = _dbContext.Products.Where(x => x.IdProducts == product.ProductsId).FirstOrDefault();
-
-                    selectProduct.Quantity -= product.Quantity ?? 0;
-
-                    _dbContext.Products.Update(selectProduct);
-                    await _dbContext.SaveChangesAsync();
+                    var selectProduct = await _productRepository2.GetByIdAsync(product.ProductsId);
+                    if (selectProduct != null)
+                    {
+                        selectProduct.Quantity -= product.Quantity ?? 0;
+                        await _productRepository2.UpdateAsync(selectProduct);
+                    }
                 }
+                await _productRepository2.SaveChangesAsync();
             }
             return Json(true);
         }
 
-        // GET: Produc/Edit
+        // update sale
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,7 +104,7 @@ namespace PruebaTecnicaWebMaster.Controllers
                 return NotFound();
             }
 
-            var sale = await _dbContext.Sales.FindAsync(id);
+            var sale = await _saleRepository.GetByIdAsync(id.Value);
             if (sale == null)
             {
                 return NotFound();
@@ -97,19 +113,19 @@ namespace PruebaTecnicaWebMaster.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id )
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == 0)
             {
                 return NotFound();
             }
 
-            var sale = _dbContext.Sales.Where(x => x.IdSale == id).FirstOrDefault();
+            await _saleRepository.UpdateAsync(id);
 
             return RedirectToAction("Accounting", "Sales");
         }
 
-        // GET: Sale/Details
+        // details sale
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -117,14 +133,13 @@ namespace PruebaTecnicaWebMaster.Controllers
                 return NotFound();
             }
 
-            var sale = _dbContext.Sales.Where(m => m.IdSale == id).FirstOrDefault();
-            var products = await _dbContext.SalesProducts.Where(x => x.SalesId == sale.IdSale).Include(c => c.Products)
-                .Select(j => new Product {
-                    NameProducts = j.Products.NameProducts,
-                    Quantity = j.Quantity ?? 0,
-                    UnitPrice = (decimal)(j.Products.UnitPrice * j.Quantity),
+            var sale = await _saleRepository.GetByIdAsync(id.Value);
+            if (sale == null)
+            {
+                return NotFound();
+            }
 
-                }).ToListAsync();
+            var products = await _salesProductRepository.GetProductsBySaleIdAsync(sale.IdSale);
 
             SaleVM saleVM = new SaleVM()
             {

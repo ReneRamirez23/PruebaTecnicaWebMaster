@@ -2,53 +2,48 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaWebMaster.Models;
+using PruebaTecnicaWebMaster.Repositories;
 
 namespace PruebaTecnicaWebMaster.Controllers
 {
     public class UserController : Controller
     {
-        private readonly BD_ControlVentasContext _dbContext;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(BD_ControlVentasContext context)
+        public UserController(IUserRepository userRepository)
         {
-            _dbContext = context;
+            _userRepository = userRepository;
         }
+
 
         [Authorize(policy: "Admin")]
         public async Task<IActionResult> Index()
         {
-            List<User> userlist = await _dbContext.Users.ToListAsync();
+            var userlist = _userRepository.GetAll();
             return View(userlist);
         }
 
-        // GET: User/Create
+        // Add User
         public IActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUser,TypeUser,FirstName,LastName,Mail,Password")] User user)
+        public IActionResult Create(User user)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Add(user);
-                await _dbContext.SaveChangesAsync();
+                _userRepository.Add(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
 
-        // GET: User/Edit
-        public async Task<IActionResult> Edit(int? id)
+        // Update User
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound();
@@ -57,23 +52,21 @@ namespace PruebaTecnicaWebMaster.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUser,TypeUser,FirstName,LastName,Mail,Password")] User user)
+        public IActionResult Edit(int id, User user)
         {
-            if (id != user.IdUser)
+            if(id != user.IdUser)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 try
                 {
-                    _dbContext.Update(user);
-                    await _dbContext.SaveChangesAsync();
+                    _userRepository.Update(user);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException) 
                 {
-                    if (!UserExists(user.IdUser))
+                    if (_userRepository.GetById(user.IdUser) == null)
                     {
                         return NotFound();
                     }
@@ -87,44 +80,23 @@ namespace PruebaTecnicaWebMaster.Controllers
             return View(user);
         }
 
-        // GET: User/Delete/
-        public async Task<IActionResult> Delete(int? id)
+        //Delete User
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            var user = _userRepository.GetById(id);
+            if(user == null)
             {
                 return NotFound();
             }
-
-            var user = await _dbContext.Users
-                .FirstOrDefaultAsync(m => m.IdUser == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
             return View(user);
         }
-
-        // POST: User/Delete/
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var user = await _dbContext.Users.FindAsync(id);
-            if (user != null)
-            {
-                _dbContext.Users.Remove(user);
-            }
-
-            await _dbContext.SaveChangesAsync();
+            _userRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-
-        private bool UserExists(int id)
-        {
-            return _dbContext.Users.Any(e => e.IdUser == id);
-        }
-
     }
 
 }

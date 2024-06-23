@@ -12,7 +12,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevenir desbordamiento horizontal */
+    overflow-x: hidden;
 }
 
 .wrapper {
@@ -33,7 +33,7 @@ header {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Añadir scroll vertical si el contenido es largo */
+    overflow-y: auto;
 }
 
     header .navbar {
@@ -72,7 +72,7 @@ header {
 }
 
 .main-content-wrapper {
-    margin-left: 250px; /* Mismo ancho que el sidebar */
+    margin-left: 250px; 
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -81,9 +81,9 @@ header {
 
 .main-content {
     flex-grow: 1;
-    overflow-y: auto; /* Asegurar scroll vertical si el contenido es largo */
+    overflow-y: auto;
     padding: 20px;
-    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del tamaño */
+    box-sizing: border-box; 
 }
 
 footer {
@@ -91,8 +91,12 @@ footer {
     color: #fff;
     width: 100%;
     text-align: center;
-    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del tamaño */
+    padding: 10px 0;
+    box-sizing: border-box;
+    position: relative;
+    bottom: 0;
 }
+
     footer ul li {
         display: inline;
         margin: 0 10px;

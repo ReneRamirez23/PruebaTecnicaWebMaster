@@ -19,10 +19,6 @@
         text-align: left;
     }
 
-    .table th {
-        background-color: #f4f4f4;
-    }
-
 .btn-group {
     display: flex;
     justify-content: center;

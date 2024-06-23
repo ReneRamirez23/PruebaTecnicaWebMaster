@@ -1,8 +1,6 @@
-
 let products = [];
 let saleProducts = [];
 let finalCost = 0;
-function getProducts() {
 
     axios.get('/Sales/InfoData')
         .then(function (response) {
@@ -20,20 +18,16 @@ function getProducts() {
             })
 
             CreateTable(products);
-
         })
         .catch(function (error) {
             console.log("Something was wrong", error);
         });
-
 }
 
 function CreateTable(data) {
-
     const tbody = document.querySelector('#bodyProduct');
     tbody.innerHTML = '';
     var files = "";
-
     data.forEach(item => {
         var row = `<tr>
             <td class="text-center">${item.nameProducts}</td>
@@ -47,24 +41,32 @@ function CreateTable(data) {
             </td>
         </tr>`;
         files += row;
-
+        } else {
+            var row = `<tr>
+            <td class="text-center">${item.nameProducts}</td>
+            <td class="text-center">$${item.unitPrice}</td>
+            <td class="text-center">${item.quantity}</td>
+            <td class="text-center">
+                <div class="btn-group prdBtns" role="group">
+                    <a class="btn btn-danger" onclick="ProductToSale(${item.idProducts},'${item.nameProducts}','${item.unitPrice}','cancel')">Cancel</a>
+                </div>
+            </td>
+        </tr>`;
+            files += row;
+        }
     });
 
     tbody.innerHTML = files;
-
 }
 
 function ProductToSale(id, name, price, action) {
-
-
     const existence = saleProducts.find(x => x.idProducts === id);
+
     if (action == "add") {
         if (existence) {
 
             existence.quantity += 1;
             existence.totalPrice = existence.quantity * existence.unitPrice;
-          
-
         } else {
 
             const newSale = {
@@ -74,9 +76,7 @@ function ProductToSale(id, name, price, action) {
                 unitPrice: price,
                 totalPrice: price
             };
-
             saleProducts.push(newSale);
-            
         }
     } else {
         if (existence) {
@@ -87,11 +87,9 @@ function ProductToSale(id, name, price, action) {
     }
 
     AddPrdSale();
-    Stock(id, action)
 }
 
 function Stock(id, action) {
-
     products.forEach((item, index) => {
 
         if (item.idProducts == id) {
@@ -100,7 +98,6 @@ function Stock(id, action) {
             } else {
                 products[index].quantity += 1;
             }
-
         }
 
     })
@@ -135,7 +132,6 @@ function AddPrdSale() {
 }
 
 function saveSale() {
-
     const finalCost = parseFloat(document.getElementById('finalCost').value);
     const nombre = document.getElementById('name').value;
     const descripcion = document.getElementById('descripcion').value;
@@ -146,7 +142,6 @@ function saveSale() {
 
         var infoProduct = { productsId: item.idProducts, quantity: item.quantity }
         pruductList.push(infoProduct);
-
     });
 
     const data = {
@@ -169,10 +164,8 @@ function saveSale() {
         });
 }
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
-
-    getProducts()
+    getProducts();
+});
 
 });

@@ -1,18 +1,141 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevenir desbordamiento horizontal */
 }
 
-body {
-  margin-bottom: 60px;
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
 }
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #343a40;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Añadir scroll vertical si el contenido es largo */
+}
+
+    header .navbar {
+        flex-direction: column;
+        align-items: start;
+        flex-grow: 1;
+    }
+
+    header .navbar-brand {
+        color: #fff;
+        margin-bottom: 1rem;
+    }
+
+    header .navbar-nav {
+        width: 100%;
+    }
+
+    header .nav-link {
+        color: #fff !important;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+        header .nav-link:hover {
+            background-color: #495057;
+        }
+
+    header #menu {
+        margin-top: auto;
+    }
+
+.boton-menu {
+    width: 100%;
+}
+
+.main-content-wrapper {
+    margin-left: 250px; /* Mismo ancho que el sidebar */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.main-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Asegurar scroll vertical si el contenido es largo */
+    padding: 20px;
+    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del tamaño */
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box; /* Asegurar que el padding se incluya en el cálculo del tamaño */
+}
+    footer ul li {
+        display: inline;
+        margin: 0 10px;
+    }
+
+        footer ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+/* Estilos para las tablas */
+
+.content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+    .content-table thead tr {
+        background-color: #393863;
+        color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .content-table th,
+    .content-table td {
+        padding: 12px 15px;
+    }
+
+    .content-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+        .content-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .content-table tbody tr:last-of-type {
+            border-bottom: 2px solid #291c5a;
+        }
+

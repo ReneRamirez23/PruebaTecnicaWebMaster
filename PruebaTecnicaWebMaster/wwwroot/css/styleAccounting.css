@@ -1,6 +1,4 @@
-﻿body {
-}
-.tabs {
+﻿.tabs {
     display: flex;
     cursor: pointer;
     padding: 10px;

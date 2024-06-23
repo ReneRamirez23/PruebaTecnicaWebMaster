@@ -7,12 +7,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="~/css/styleLogin.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"   />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <title>Index</title>
 </head>
 <body>
     <div class="login-container">
-        <div class="login-form bg-light">
+        <div class="login-form">
             <h3 class="text-center mb-4">Iniciar Sesión</h3>
             <form asp-action="Login" method="post">
                 <div class="mb-3">
@@ -29,11 +29,10 @@
                         Please enter your password
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Sing in</button>
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
             </form>
         </div>
     </div>
-
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

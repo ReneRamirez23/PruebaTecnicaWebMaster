@@ -2,7 +2,83 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .chart-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .greeting-container {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container">
+    <div class="greeting-container">
+        <h2>Welcome to the sales system</h2>
+        <p>Here you can see sales statistics!</p>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="salesChart" width="800" height="400"></canvas>
+    </div>
+    <br/>
+    <div class="greeting-container">
+        <p>Remember that time is important!</p>
+        <p id="clock" style="font-size: 32px; margin-top: 20px;"></p>
+    </div>
 </div>
+
+<!--creasion de grafica-->
+<script>
+    var chartData = @Html.Raw(ViewBag.ChartData);
+
+    var labels = chartData.map(d => d.Date);
+    var data = chartData.map(d => d.TotalPrice);
+
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sales per day',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+<!--creasion de reloj-->
+<script>
+    function updateTime() {
+        var now = new Date();
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+        var timeString = hours + ':' + minutes + ':' + seconds;
+        document.getElementById('clock').textContent = timeString;
+        setTimeout(updateTime, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        updateTime();
+    });
+</script>
+

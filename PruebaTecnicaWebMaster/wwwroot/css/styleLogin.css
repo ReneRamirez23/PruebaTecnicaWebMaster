@@ -1,14 +1,119 @@
-.login-container {
+﻿.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #1a1a1a; 
+    color: #f1f1f1; 
 }
+
 
 .login-form {
     width: 100%;
     max-width: 400px;
-    padding: 15px;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #2b2b2b;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
+
+    .login-form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #3a3a3a; 
+        color: #f1f1f1;
+    }
+
+        .login-form input:focus {
+            outline: none;
+            border: 1px solid #555; 
+        }
+
+    .login-form button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .login-form button:hover {
+            background-color: #45a049; 
+        }
+
+    .login-form label {
+        color: #f1f1f1; 
+    }
+
+    .login-form h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f1f1f1;
+    }
+
+    .login-form .invalid-feedback {
+        color: #ff4d4d;
+    }
+
+    .login-form a {
+        color: #1e90ff;
+        text-decoration: none;
+    }
+
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+
+/* pagina de error */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a1a;
+    color: #f1f1f1;
+}
+
+.error-content {
+    text-align: center;
+    background-color: #2b2b2b;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.error-image {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+.error-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #f1f1f1;
+}
+
+.error-content .btn-primary {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .error-content .btn-primary:hover {
+        background-color: #45a049;
+    }

@@ -9,27 +9,34 @@
 <h1>New Sales</h1>
 <br />
 <div class="tables-container">
-    <div class="table-wrapper">
-        <h6>Products</h6>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Produc Name</th>
-                    <th>Unit Price</th>
-                    <th>Total Quantity</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="bodyProduct">
-                
-            </tbody>
-        </table>
+    <!-- tabla de productos -->
+    <div>
+        <div class="justify-content-center">
+            <h6>Products</h6>
+        </div>
+        <div class="table-wrapper">
+            <table class="table content-table">
+                <thead>
+                    <tr>
+                        <th>Produc Name</th>
+                        <th>Unit Price</th>
+                        <th>Total Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bodyProduct">
+                </tbody>
+            </table>
+        </div>
     </div>
+    
     <!-- tabla y formulario de la venta -->
-    <div class="table-wrapper">
-        <div>
+    <div>
+        <div class="justify-content-center">
             <h6>Sale details</h6>
-            <table class="table">
+        </div>
+        <div class="table-wrapper">
+            <table class="table content-table">
                 <thead>
                     <tr>
                         <th>Product Name</th>
@@ -41,8 +48,11 @@
                 </tbody>
             </table>
         </div>
-        <br />
-
+    </div>
+</div>
+<br/>
+<div class ="row">
+    <div class="col-md-4">
         <!-- formulario -->
         <form id="infoSale">
             <div>
@@ -64,7 +74,7 @@
                 </div>
             </div>
         </form>
-        
+
         <button id="saveSale" onclick="saveSale()" class="btn btn-success">Save</button>
     </div>
 </div>

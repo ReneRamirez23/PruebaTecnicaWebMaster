@@ -1,4 +1,4 @@
-@{
+﻿@{
     Layout = null;
 }
 
@@ -6,14 +6,17 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"   />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styleLogin.css" asp-append-version="true" />
     <title>ErrorLogin</title>
 </head>
 <body>
-    <div style="display:flex">
-        <h1 style="text-align:center; align-content:center;">!oops it seems that you have made a mistake in your data</h1>
-        <br />
-        <a style="text-align:center" type="button" class="btn btn-primary" href="../Login">go back</a>
+    <div class="error-container">
+        <div class="error-content">
+            <img src="~/images/error.png" alt="Error" class="error-image">
+            <h1 class="error-title">Oops, it seems that you have made a mistake in your data</h1>
+            <a class="btn btn-primary mt-3" href="../Login">Go back</a>
+        </div>
     </div>
 </body>
 </html>

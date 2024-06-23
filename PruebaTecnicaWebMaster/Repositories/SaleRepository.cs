@@ -14,6 +14,7 @@ namespace PruebaTecnicaWebMaster.Repositories
         Task AddAsync(Sale sale);
         Task UpdateAsync(int id);
         Task SaveChangesAsync();
+        Task<List<Sale>> GetSalesByDayAsync();
     }
     public interface ISalesProductRepository
     {
@@ -75,6 +76,19 @@ namespace PruebaTecnicaWebMaster.Repositories
         public async Task SaveChangesAsync()
         {
             await _bdContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Sale>> GetSalesByDayAsync()
+        {
+            return await _bdContext.Sales
+        .GroupBy(s => s.CreationDate.Date)
+        .Select(g => new Sale
+        {
+            CreationDate = g.Key,
+            TotalPrice = g.Sum(s => s.TotalPrice)
+        })
+        .OrderBy(s => s.CreationDate)
+        .ToListAsync();
         }
     }
 

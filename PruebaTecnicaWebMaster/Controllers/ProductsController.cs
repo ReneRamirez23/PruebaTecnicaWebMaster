@@ -93,8 +93,16 @@ namespace PruebaTecnicaWebMaster.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            _productRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _productRepository.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorMessage"] = "This product cannot be deleted because it has database dependencies.";
+                return RedirectToAction(nameof(Delete), new { id });
+            }
         }
     }
 }

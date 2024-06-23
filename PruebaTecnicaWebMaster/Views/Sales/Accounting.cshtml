@@ -4,7 +4,7 @@
     ViewData["Title"] = "Accounting";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<h1>Payments</h1>
 <link rel="stylesheet" href="~/css/styleAccounting.css" asp-append-version="true" />
 
 <div class="tabs">
@@ -14,7 +14,7 @@
 
 <!-- formulario 1 -->
 <div id="tab1" class="tab-content active">
-    <table class="table">
+    <table class="table content-table">
         <thead>
             <tr>
                 <th>
@@ -51,7 +51,7 @@
                             - - -
                         </td>
                         <td>
-                            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdSale">Edit</a>
+                            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdSale">$ Pay</a>
                         </td>
                     </tr>
                 }
@@ -62,7 +62,7 @@
 
 <!-- formulario 2 -->
 <div id="tab2" class="tab-content">
-    <table class="table">
+    <table class="table content-table">
         <thead>
             <tr>
                 <th>

@@ -28,11 +28,17 @@ function getProducts() {
         });
 }
 
-function CreateTable(data) {
+function CreateTable(data, filter = "") {
     const tbody = document.querySelector('#bodyProduct');
     tbody.innerHTML = '';
     var files = "";
-    data.forEach(item => {
+
+    // Filtrar los productos basados en el término de búsqueda
+    const filteredData = data.filter(item =>
+        item.nameProducts.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    filteredData.forEach(item => {
         if (item.quantity > 0) {
             var row = `<tr>
                 <td class="text-center">${item.nameProducts}</td>
@@ -71,7 +77,7 @@ function ProductToSale(id, name, price, action) {
         const product = products.find(p => p.idProducts === id);
         if (product && product.quantity > 0) {
             if (existence) {
-                if (existence.quantity < product.originalQuantity) { // Validar no exceder la cantidad original
+                if (existence.quantity < product.originalQuantity) {
                     existence.quantity += 1;
                     existence.totalPrice = existence.quantity * existence.unitPrice;
                 } else {
@@ -163,20 +169,29 @@ function saveSale() {
     const descripcion = document.getElementById('descripcion').value;
     const mail = document.getElementById('mail').value;
 
+    const validEm = validateEmail(mail);
+
     if (finalCost === '' || nombre === '' || descripcion === '' || mail === '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Required Product',
-                text: 'To make the sale you must add at least one product.',
-                confirmButtonColor: '#3085d6',
-            });
-        } else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Required fields',
-                text: 'Please fill out all fields.',
-                confirmButtonColor: '#3085d6',
-            });
+        Swal.fire({
+            icon: 'warning',
+            title: 'Required fields',
+            text: 'Please fill out all fields.',
+            confirmButtonColor: '#3085d6',
+        });
+    } else if (finalCost == 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Required Product',
+            text: 'To make the sale you must add at least one product.',
+            confirmButtonColor: '#3085d6',
+        });
+    } else if (!validEm) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Email is invalid',
+            text: 'Enter a valid email.',
+            confirmButtonColor: '#3085d6',
+        });
     } else {
         let pruductList = [];
         saleProducts.forEach(item => {
@@ -224,6 +239,28 @@ function saveSale() {
             }
         });
     }
+}
+
+function validateEmail(email) {
+    const emailInput = document.getElementById('mail');
+    const emailError = document.getElementById('emailError');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (emailRegex.test(email)) {
+        emailInput.classList.remove('invalid');
+        emailError.style.display = 'none';
+        return true;
+    } else {
+        emailInput.classList.add('invalid');
+        emailError.style.display = 'block';
+        return false;
+    }
+}
+
+function filterProducts() {
+    const searchTerm = document.getElementById('searchProduct').value;
+    CreateTable(products, searchTerm);
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -35,3 +35,86 @@
     overflow-y: auto; 
 }
 
+.invalid-feedback {
+    display: none;
+    color: red;
+    margin-top: 5px;
+}
+
+.invalid {
+    border-color: red;
+}
+
+/* Estilos para el buscador */
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+#searchProduct {
+    width: 300px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+    #searchProduct:focus {
+        border-color: #393863;
+        box-shadow: 0 0 5px rgba(57, 56, 99, 0.5);
+        outline: none;
+    }
+
+    #searchProduct::placeholder {
+        color: #999;
+    }
+
+/* Estilos para el buscador */
+.tables-container {
+    display: flex;
+}
+
+.table th, .table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+#infoSale {
+    margin-bottom: 20px;
+}
+
+.stDesc {
+    margin-left: 20px;
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+}
+
+.prdBtns a {
+    font-size: 65% !important;
+    padding: 0px !important;
+    margin: 1px;
+}
+
+.saleSection {
+    border-left: 1px solid #808080;
+    margin-left: 20px;
+    padding-left: 20px;
+}
+
+.prdsToSale {
+    height: 350px;
+    border: 1px solid #393863;
+}
+
+    .prdsToSale .table {
+        margin: 0 !important;
+    }

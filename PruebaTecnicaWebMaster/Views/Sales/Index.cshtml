@@ -6,7 +6,7 @@
 }
 <link rel="stylesheet" href="~/css/styleSale.css" asp-append-version="true" />
 
-<h1>New Sales</h1>
+<h1>New Sale</h1>
 <br />
 <div class="tables-container">
     <!-- tabla de productos -->
@@ -14,11 +14,15 @@
         <div class="justify-content-center">
             <h6>Products</h6>
         </div>
+        <!-- Buscador de productos -->
+        <div class="search-container">
+            <input type="text" id="searchProduct" placeholder="Search product by name" onkeyup="filterProducts()">
+        </div>
         <div class="table-wrapper">
             <table class="table content-table">
                 <thead>
                     <tr>
-                        <th>Produc Name</th>
+                        <th>Product Name</th>
                         <th>Unit Price</th>
                         <th>Total Quantity</th>
                         <th></th>
@@ -31,11 +35,34 @@
     </div>
     
     <!-- tabla y formulario de la venta -->
-    <div>
+    <div class="container saleSection">
         <div class="justify-content-center">
             <h6>Sale details</h6>
         </div>
-        <div class="table-wrapper">
+        <div class="row">
+            <!-- formulario -->
+            <div id="infoSale" class="d-flex">
+                <div>
+                    <div>
+                        <label class="form-label">Customer name</label>
+                        <input id="name" name="name" type="text" class="form-control" style="width: 300px !important;">
+                    </div>
+                    <div>
+                        <label class="form-label">Mail</label>
+                        <input id="mail" name="mail" type="email" class="form-control" style="width: 300px !important;">
+                        <div id="emailError" class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+                </div>
+                <div class="stDesc">
+                    <label class="form-label">Description</label>
+                    <textarea id="descripcion" name="descripcion" type="text" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper prdsToSale">
             <table class="table content-table">
                 <thead>
                     <tr>
@@ -48,35 +75,13 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-<br/>
-<div class ="row">
-    <div class="col-md-4">
-        <!-- formulario -->
-        <form id="infoSale">
-            <div>
-                <div class="mb-3">
-                    <label class="form-label">Total cost</label>
-                    <input id="finalCost" name="finalCost" class="form-control" type="text" value="0" disabled readonly>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Costumer name</label>
-                    <input id="name" name="name" type="text" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Descripcion</label>
-                    <input id="descripcion" name="descripcion" type="text" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Mail</label>
-                    <input id="mail" name="mail" type="text" class="form-control">
-                </div>
-            </div>
-        </form>
-
+        <div class="mb-3">
+            <label class="form-label">Total cost</label>
+            <input id="finalCost" name="finalCost" class="form-control" type="text" value="0" disabled readonly>
+        </div>
         <button id="saveSale" onclick="saveSale()" class="btn btn-success">Save</button>
     </div>
+
 </div>
 
 <script src="~/js/Sale.js" asp-append-version="true"></script>

@@ -164,7 +164,6 @@ function saveSale() {
     const mail = document.getElementById('mail').value;
 
     if (finalCost === '' || nombre === '' || descripcion === '' || mail === '') {
-        if (finalCost === 0) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Product',
@@ -178,7 +177,6 @@ function saveSale() {
                 text: 'Please fill out all fields.',
                 confirmButtonColor: '#3085d6',
             });
-        }
     } else {
         let pruductList = [];
         saleProducts.forEach(item => {
